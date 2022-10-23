@@ -114,7 +114,7 @@ exports.resetpassword = async (req, res) => {
 
       res.send({ message: "Password updated" });
     } else {
-      return res.status(400).send({ msg: "password doesnot match" });
+      return res.status(400).send({ msg: "password doesnot match backend" });
     }
   } catch (err) {
     return res.status(400).send({ msg: "Something went wrong" });
