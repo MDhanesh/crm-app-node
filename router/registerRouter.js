@@ -7,7 +7,7 @@ router.post("/signup", register.signup);
 router.post("/signin", register.signin);
 router.post("/forgot", changepassword.forgot);
 router.get("/resetpassword/:id/:token", changepassword.resetpassword);
-router.post(
+router.put(
   "/resetpasswordconfirm/:id/:token",
   changepassword.resetpasswordconfirm
 );
