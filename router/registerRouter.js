@@ -7,6 +7,9 @@ router.post("/signup", register.signup);
 router.post("/signin", register.signin);
 router.post("/forgot", changepassword.forgot);
 router.get("/resetpassword/:id/:token", changepassword.resetpassword);
-router.post("/resetpassword/:id/:token", changepassword.resetpassword);
+router.put(
+  "/resetpasswordconfirm/:id/:token",
+  changepassword.resetpasswordconfirm
+);
 
 module.exports = router;
