@@ -99,9 +99,7 @@ exports.resetpassword = async (req, res) => {
       req.body.password,
       req.body.confirmpassword
     );
-    if (!isSameePassword) {
-      return res.status(400).send({ msg: "password doesnot match" });
-    } else {
+    if (isSameePassword) {
       delete req.body.confirmpassword;
       const verify = jwt.verify(token, secret);
       const salt = await bcrypt.genSalt(10);
@@ -115,6 +113,8 @@ exports.resetpassword = async (req, res) => {
       console.log(updatePassword);
 
       res.send({ message: "Password updated" });
+    } else {
+      return res.status(400).send({ msg: "password doesnot match" });
     }
   } catch (err) {
     return res.status(400).send({ msg: "Something went wrong" });
