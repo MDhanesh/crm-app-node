@@ -27,9 +27,9 @@ exports.forgot = async (req, res) => {
     //User exist and now create a one time link valid for 15 minutes
     const token = jwt.sign(payload, secret, { expiresIn: "15m" });
     console.log(token);
-    const link = `https://localhost:3001/resetpassword/${existuser._id}/${token}`;
+    //const link = `https://localhost:3001/resetpassword/${existuser._id}/${token}`;
     // const link = `https://crm-app-node.netlify.app/reset/${existuser._id}/${token}`;
-    // const link = `https://crm-app-node.netlify.app/resetpassword/${existuser._id}/${token}`;
+    const link = `https://crm-app-node.netlify.app/resetpassword/${existuser._id}/${token}`;
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
