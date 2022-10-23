@@ -80,7 +80,7 @@ exports.resetpassword = async (req, res) => {
   }
 };
 
-exports.resetpasswordconfirm = async (req, res) => {
+exports.resetpassword = async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
   //check if this id exist in database
