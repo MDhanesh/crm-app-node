@@ -1,8 +1,6 @@
 const mongo = require("../connect");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const nodemailer = require("nodemailer");
 
 exports.signup = async (req, res, next) => {
   try {
