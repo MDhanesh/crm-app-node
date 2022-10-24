@@ -9,7 +9,7 @@ const { ObjectId } = require("mongodb");
 
 exports.forgot = async (req, res) => {
   const { email } = req.body;
-  console.log(email);
+  //console.log(email);
   try {
     const existuser = await mongo.selectedDB
       .collection("users")
@@ -27,9 +27,7 @@ exports.forgot = async (req, res) => {
     //User exist and now create a one time link valid for 15 minutes
     const token = jwt.sign(payload, secret, { expiresIn: "15m" });
     console.log(token);
-    //const link = `https://localhost:3001/resetpassword/${existuser._id}/${token}`;
     const link = `https://crm-app-node.netlify.app/reset/${existuser._id}/${token}`;
-    //const link = `https://crm-app-node.netlify.app/resetpassword/${existuser._id}/${token}`;
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -83,39 +81,40 @@ exports.resetpassword = async (req, res) => {
 exports.resetpassword = async (req, res) => {
   const { id, token } = req.params;
   const { password } = req.body;
-  //check if this id exist in database
-  const existuser = await mongo.selectedDB
-    .collection("users")
-    .findOne({ _id: ObjectId(id) });
-  if (!existuser) {
-    return res.status(400).send({ msg: "User Not Exist" });
-  }
-  const secret = process.env.SECRET_KEY + existuser.password;
   try {
-    // const checkpassword = (password, confirmpassword) => {
-    //   return password !== confirmpassword ? false : true;
-    // };
-    // const isSameePassword = checkpassword(
-    //   req.body.password,
-    //   req.body.confirmpassword
-    // );
-    // if (!isSameePassword) {
-    //   return res.status(400).send({ msg: "password doesnot match" });
-    // } else {
-    //   delete req.body.confirmpassword;
-    const verify = jwt.verify(token, secret);
-    const salt = await bcrypt.genSalt(10);
-    const encryptedPassword = await bcrypt.hash(password, salt);
-    const updatePassword = await mongo.selectedDB
+    //check if this id exist in database
+    const existuser = await mongo.selectedDB
       .collection("users")
-      .updateOne(
-        { _id: ObjectId(id) },
-        { $set: { password: encryptedPassword } }
-      );
-    console.log(updatePassword);
+      .findOne({ _id: ObjectId(id) });
+    if (!existuser) {
+      return res.status(400).send({ msg: "User Not Exist" });
+    }
+    const secret = process.env.SECRET_KEY + existuser.password;
 
-    res.send({ message: "Password updated" });
-    // }
+    const checkpassword = (password, confirmpassword) => {
+      return password !== confirmpassword ? false : true;
+    };
+    const isSameePassword = checkpassword(
+      req.body.password,
+      req.body.confirmpassword
+    );
+    if (!isSameePassword) {
+      return res.status(400).send({ msg: "password doesnot match" });
+    } else {
+      delete req.body.confirmpassword;
+      const verify = jwt.verify(token, secret);
+      const salt = await bcrypt.genSalt(10);
+      const encryptedPassword = await bcrypt.hash(password, salt);
+      const updatePassword = await mongo.selectedDB
+        .collection("users")
+        .updateOne(
+          { _id: ObjectId(id) },
+          { $set: { password: encryptedPassword } }
+        );
+      console.log(updatePassword);
+
+      res.send({ message: "Password updated" });
+    }
   } catch (err) {
     return res.status(400).send({ msg: "Something went wrong" });
   }
