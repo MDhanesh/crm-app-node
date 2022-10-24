@@ -99,7 +99,7 @@ exports.resetpassword = async (req, res) => {
       req.body.confirmpassword
     );
     if (!isSameePassword) {
-      return res.status(400).send({ msg: "password doesnot match" });
+      return res.status(400).send({ msg: "password doesnot match backend" });
     } else {
       delete req.body.confirmpassword;
       const verify = jwt.verify(token, secret);
