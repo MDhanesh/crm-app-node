@@ -1,26 +1,25 @@
 const mongo = require("../connect");
 const { ObjectId } = require("mongodb");
-
-module.exports.getServices = async (req, res) => {
+module.exports.getContact = async (req, res, next) => {
   try {
-    const employeedata = await mongo.selectedDB
-      .collection("services")
+    const contactdata = await mongo.selectedDB
+      .collection("products")
       .find()
       .toArray();
-    res.send(employeedata);
+    res.send(contactdata);
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
   }
 };
-module.exports.updateServices = async (req, res) => {
+module.exports.updateContact = async (req, res, next) => {
   try {
     const id = req.params.id;
     const updatedData = await mongo.selectedDB
-      .collection("services")
+      .collection("products")
       .findOneAndUpdate(
         { _id: ObjectId(id) },
-        { $set: { ...req.body.services } },
+        { $set: { ...req.body.Contact } },
         { returnDocument: "after" }
       );
     res.send(updatedData);
@@ -29,23 +28,23 @@ module.exports.updateServices = async (req, res) => {
     res.status(500).send(err);
   }
 };
-module.exports.createServices = async (req, res) => {
+module.exports.createContact = async (req, res, next) => {
   console.log("came");
   try {
     const insertedRseponse = await mongo.selectedDB
-      .collection("services")
-      .insertOne(req.body.services);
+      .collection("products")
+      .insertOne(req.body.products);
     res.send(insertedRseponse);
   } catch (err) {
     console.error(err);
     res.status(500).send(err);
   }
 };
-module.exports.deleteServices = async (req, res) => {
+module.exports.deleteContact = async (req, res, next) => {
   try {
     const id = req.params.id;
     const deletedData = await mongo.selectedDB
-      .collection("services")
+      .collection("products")
       .remove({ _id: ObjectId(id) });
     res.send(deletedData);
   } catch (err) {
