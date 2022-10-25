@@ -3,7 +3,7 @@ const { ObjectId } = require("mongodb");
 module.exports.getContact = async (req, res, next) => {
   try {
     const contactdata = await mongo.selectedDB
-      .collection("products")
+      .collection("contact")
       .find()
       .toArray();
     res.send(contactdata);
@@ -16,7 +16,7 @@ module.exports.updateContact = async (req, res, next) => {
   try {
     const id = req.params.id;
     const updatedData = await mongo.selectedDB
-      .collection("products")
+      .collection("contact")
       .findOneAndUpdate(
         { _id: ObjectId(id) },
         { $set: { ...req.body.Contact } },
@@ -32,8 +32,8 @@ module.exports.createContact = async (req, res, next) => {
   console.log("came");
   try {
     const insertedRseponse = await mongo.selectedDB
-      .collection("products")
-      .insertOne(req.body.products);
+      .collection("contact")
+      .insertOne(req.body.contact);
     res.send(insertedRseponse);
   } catch (err) {
     console.error(err);
@@ -44,7 +44,7 @@ module.exports.deleteContact = async (req, res, next) => {
   try {
     const id = req.params.id;
     const deletedData = await mongo.selectedDB
-      .collection("products")
+      .collection("contact")
       .remove({ _id: ObjectId(id) });
     res.send(deletedData);
   } catch (err) {
