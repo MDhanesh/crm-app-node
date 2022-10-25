@@ -3,7 +3,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const mongo = require("./connect");
 const registerRouter = require("./router/registerRouter");
-
+const servicesRouter = require("./router/servicesRouter");
 //.env
 dotenv.config();
 mongo.connect();
@@ -15,6 +15,7 @@ app.use(express.json());
 
 ///register
 app.use("/register", registerRouter);
+app.use("/services", servicesRouter);
 
 //listening port
 app.listen(process.env.PORT);
